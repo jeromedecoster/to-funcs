@@ -13,6 +13,7 @@ Package [on npm](https://www.npmjs.com/package/to-funcs)
 ## API
 
 * [toAscii](#toasciistr)
+* [toBoolean](#tobooleandata-fallback)
 * [toCamelCase](#tocamelcasestr)
 * [toNumber](#tonumberdata-fallback)
 * [toSlugCase](#toslugcasestr)
@@ -40,6 +41,37 @@ toAscii('hêllø‐wörld')
 
 // -
 toAscii('💣-ؿ')
+```
+
+---
+
+#### toBoolean(data, [fallback])
+
+Check if `data` is a **String representation** of a **Boolean**
+
+If yes, convert and return the boolean value otherwise return `fallback`
+
+If `data` is already a boolean, return `data`
+
+| Argument | Action |
+| :------ | :------- |
+| **data** | the tested `data` |
+| **fallback** | optional `fallback`, default to `undefined`. Must be a `boolean` |
+
+```js
+const toBoolean = require('to-funcs/to-boolean')
+
+// true
+toBoolean('true')
+
+// undefined
+toBoolean('123')
+
+// false
+toBoolean('123', false)
+
+// false
+toBoolean(false)
 ```
 
 ---
