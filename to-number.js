@@ -14,6 +14,7 @@ module.exports = function(data, fallback) {
 
     if (reg.test(data)) {
       n = new Function('return (' + data + ')')()
+      if (n === Infinity || n === -Infinity) return n
       if ((n - n + 1) >= 0) {
         return Math.round(n * 10000000000) / 10000000000
       }
