@@ -97,6 +97,17 @@ Check if `data` is a **String representation** of a **Number**
 
 If yes, convert and return the numeric value otherwise return `fallback`
 
+Check also if `data` is a simple **Math expression**
+
+If yes, evaluate it and return the numeric value otherwise return `fallback`
+
+Accepted expressions are:
+
+* `number` + `number`
+* `number` - `number`
+* `number` * `number`
+* `number` / `number`
+
 If `data` is already a number, return `data`
 
 | Argument | Action |
@@ -118,6 +129,12 @@ toNumber('3.45s', 1)
 
 // -1.23
 toNumber(-1.23)
+
+// 3
+toNumber('1 + 2')
+
+// .5
+toNumber('.1 / .2')
 ```
 
 ---
@@ -142,6 +159,7 @@ toSlugCase('Hêllø Wörld')
 
 Mainly forked / inspired on
 - [camelcase](https://github.com/sindresorhus/camelcase)
+- [eval-expression](https://github.com/tomekwi/eval-expression.js)
 - [to-camel-case](https://github.com/ianstormtaylor/to-camel-case)
 - [to-slug-case](https://github.com/ianstormtaylor/to-slug-case)
 

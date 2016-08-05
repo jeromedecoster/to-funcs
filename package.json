@@ -1,6 +1,6 @@
 {
   "name": "to-funcs",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A very limited subset of to-* functions I use every day",
   "repository": "jeromedecoster/to-funcs",
   "files": [

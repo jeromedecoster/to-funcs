@@ -54,6 +54,7 @@ test('to-number no fallback', function (t) {
 
   t.equal(fn('-1.1'),      -1.1)
   t.equal(fn('-1'),        -1)
+  t.equal(fn('-1.'),       -1)
   t.equal(fn('0'),         0)
   t.equal(fn('+0'),        0)
   t.equal(fn('-0'),        0)
@@ -112,3 +113,59 @@ test('to-number fallback', function (t) {
   t.equal(fn('a', /a/),       undefined)
   t.end()
 })
+
+function dec10(n) { return Math.round(n * 10000000000) / 10000000000 }
+
+test('to-number expression', function (t) {
+
+  // special case...
+  // should be parsed, but nobody write 1. + 2.
+  // so, ignored to simplify and speed up the function
+  t.equal(fn(' 1. + 2. '), undefined)
+  // ...end of special case
+
+  t.equal(fn(' 1 + 2 '),     3)
+  t.equal(fn(' 1 / 2 '),     .5)
+  t.equal(fn(' 1 - 2 '),     -1)
+  t.equal(fn(' 1 * 2 '),     2)
+  t.equal(fn(' +1 + +2 '),   3)
+  t.equal(fn(' +1 / +2 '),   .5)
+  t.equal(fn(' +1 - +2 '),   -1)
+  t.equal(fn(' +1 * +2 '),   2)
+  t.equal(fn(' -1 + -2 '),   -3)
+  t.equal(fn(' -1 / -2 '),   .5)
+  t.equal(fn(' -1 - -2 '),   1)
+  t.equal(fn(' -1 * -2 '),   2)
+  t.equal(fn(' 1 + 0 '),     1)
+  t.equal(fn(' 1 / 0 '),     undefined)
+  t.equal(fn(' 1 - 0 '),     1)
+  t.equal(fn(' 1 * 0 '),     0)
+  t.equal(fn(' 0 / 0 '),     undefined)
+  t.equal(fn(' 1.0 + 2.0 '), 3)
+  t.equal(fn(' 1.0 / 2.0 '), .5)
+  t.equal(fn(' 1.0 - 2.0 '), -1)
+  t.equal(fn(' 1.0 * 2.0 '), 2)
+  t.equal(fn(' 1.1 + 2.1 '), 3.2)
+  t.equal(fn(' 1.1 / 2.1 '), dec10( 1.1 / 2.1 ))
+  t.equal(fn(' 1.1 - 2.1 '), -1)
+  t.equal(fn(' 1.1 * 2.1 '), 2.31) // insteadof 2.3100000000000005
+  t.equal(fn(' .1 + .2 '),   .3)
+  t.equal(fn(' .1 / .2 '),   .5)
+  t.equal(fn(' .1 - .2 '),   -.1)
+  t.equal(fn(' .1 * .2 '),   .02) // insteadof 0.020000000000000004
+  t.equal(fn(' +.1 + +.2 '), .3)
+  t.equal(fn(' +.1 / +.2 '), .5)
+  t.equal(fn(' +.1 - +.2 '), -.1)
+  t.equal(fn(' +.1 * +.2 '), .02)
+  t.equal(fn(' -.1 + -.2 '), -.3) // insteadof -0.30000000000000004
+  t.equal(fn(' -.1 / -.2 '), .5)
+  t.equal(fn(' -.1 - -.2 '), .1)
+  t.equal(fn(' -.1 * -.2 '), .02) // insteadof 0.020000000000000004
+
+  t.equal(fn(' 1 + 1.1. '),  undefined)
+  t.equal(fn(' 1 + -+1.1 '), undefined)
+  t.equal(fn(' 1 + 1..1 '),  undefined)
+  t.end()
+})
+
+
